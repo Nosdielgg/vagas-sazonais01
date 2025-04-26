@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Vagas Sazonais nos EUA</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #007BFF; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 10px 0; padding: 10px; background: #f1f1f1; border-radius: 5px; }
+        a { text-decoration: none; color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Vagas Sazonais Disponíveis</h1>
+    <ul id="job-list"></ul>
+
+    <script>
+        fetch('https://seasonaljobs.dol.gov/feeds/790-790A.json')
+            .then(response => response.json())
+            .then(data => {
+                const jobList = document.getElementById('job-list');
+                data.slice(0, 20).forEach(job => { // Pega as 20 primeiras vagas
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${job.url}" target="_blank">${job.position_title} - ${job.city}, ${job.state}</a>`;
+                    jobList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar vagas:', error));
+    </script>
+</body>
+</html>
